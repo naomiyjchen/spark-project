@@ -5,8 +5,8 @@
 ## Create the virtual environment
 
 ```
-python -m venv final-project
-source final-project/bin/activate
+python -m venv .venv
+source .venv/bin/activate
 
 pip install pyspark torch transformers huggingface_hub
 
@@ -15,8 +15,8 @@ pip install pyspark torch transformers huggingface_hub
 
 ## Set environment variables to use the virtual environment
 ```
-export PYSPARK_PYTHON=~/final-project/final-project/bin/python
-export PYSPARK_DRIVER_PYTHON=~/final-project/final-project/bin/python
+export PYSPARK_PYTHON=~/spark-project/.venv/bin/python
+export PYSPARK_DRIVER_PYTHON=~/spark-project/.venv/bin/python
 ```
 
 ## Start Spark Shell
@@ -31,3 +31,14 @@ print(sys.executable)
 
 ```
 
+## Check spark application
+
+Check running application
+```
+yarn application -list
+```
+
+Kill running application, for example
+```
+yarn application -kill application_1724767128407_12034
+```
