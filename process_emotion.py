@@ -41,9 +41,10 @@ emotion_udf = udf(
 def process_in_chunks(spark, path, output_dir, chunk_size=100):
     raw_df = spark.read.parquet(path)
     df = raw_df.dropna()
-    total_rows = df.count()
+
+    logging.info(f"Total number of rows: {df.count()}")
     # assign a unique index to each row
-    rdd_with_index = df.rdd.zipWithIndex()
+    rdd_with_index = df.rdd.zipWithIndex().persist()
     num_chunks = total_rows // chunk_size + (1 if total_rows % chunk_size > 0 else 0)
     
     emotion_labels = ["sadness", "joy", "love", "anger", "fear", "surprise"]
@@ -69,6 +70,7 @@ def process_in_chunks(spark, path, output_dir, chunk_size=100):
         final_df.write.mode("overwrite").parquet(chunk_path)
         
         logging.info(f"Processed chunk {chunk_num + 1}/{num_chunks} and saved to HDFS.")
+
 
 
 def main(input_path, output_dir, chunk_size=100):
