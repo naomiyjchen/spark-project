@@ -42,7 +42,8 @@ def process_in_chunks(spark, path, output_dir, chunk_size=100):
     raw_df = spark.read.parquet(path)
     df = raw_df.dropna()
 
-    logging.info(f"Total number of rows: {df.count()}")
+    total_rows = df.count()
+    logging.info(f"Total number of rows: {total_rows}")
     # assign a unique index to each row
     rdd_with_index = df.rdd.zipWithIndex().persist()
     num_chunks = total_rows // chunk_size + (1 if total_rows % chunk_size > 0 else 0)
