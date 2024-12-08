@@ -8,7 +8,7 @@
 python -m venv .venv
 source .venv/bin/activate
 
-pip install pyspark torch transformers huggingface_hub matplotlib pandas venv-pack
+pip install pyspark torch transformers huggingface_hub venv-pack
 ```
 
 
