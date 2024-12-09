@@ -8,20 +8,32 @@
 python -m venv .venv
 source .venv/bin/activate
 
-pip install pyspark torch transformers huggingface_hub
-
+pip install pyspark torch transformers huggingface_hub venv-pack
 ```
 
 
-## Set environment variables to use the virtual environment
+Package the environment into a tar.gz archive:
+
 ```
-export PYSPARK_PYTHON=~/spark-project/.venv/bin/python
-export PYSPARK_DRIVER_PYTHON=~/spark-project/.venv/bin/python
+(.venv) $ venv-pack -o environment.tar.gz
+Collecting packages...
+Packing environment at 
 ```
+
+
 
 ## Start Spark Shell
+
+To launch the interactive job, do the following within the virtual environment,
 ```
-pyspark --deploy-mode client
+PYSPARK_DRIVER_PYTHON=`which python` \
+PYSPARK_PYTHON=./environment/bin/python \
+pyspark \
+--conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
+--master yarn \
+--deploy-mode client \
+--archives environment.tar.gz#environment
+
 ```
 
 You can use the below to check your environment
